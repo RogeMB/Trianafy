@@ -40,4 +40,6 @@ public class SongService {
         repository.deleteById(id);
     }
 
+    public List<Song> findByArtist(Optional<Artist> artist) { return repository.findByArtist(artist); }
+
 }
