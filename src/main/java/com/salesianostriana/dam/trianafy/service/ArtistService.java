@@ -32,12 +32,9 @@ public class ArtistService {
         return repository.save(artist);
     }
 
-    public void delete(Artist artist) {
-        repository.delete(artist);
-    }
+    public void delete(Artist artist) { repository.delete(artist); }
 
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
-
 }
