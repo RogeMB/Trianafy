@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -84,6 +85,49 @@ public class ArtistController {
                             .add(artist));
         }
     }
+
+
+    @Operation(summary = "Este método edita un artista localizado por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha editado un nuevo artista",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Artist.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            [
+                                                {"id": 1, "name": "Muse"},    
+                                            ]                                          
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se han introducido bien los datos del artista",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ningún artista con ese ID",
+                    content = @Content)
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<Artist> editOneArtist(
+            @RequestBody @NotNull Artist artist,
+            @PathVariable Long id) {
+        if(artistServ.findById(id).isEmpty()) {
+           return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        else if(artist.getName() ==null || artist.getName().isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        else{
+            return ResponseEntity.of(artistServ.findById(id).map(oldArt -> {
+                oldArt.setName(artist.getName());
+                artistServ.edit(artist);
+                return Optional.of(artistServ.edit(oldArt));
+                })
+                    .orElse(Optional.empty())
+            );
+        }
+     }
 
 
 
