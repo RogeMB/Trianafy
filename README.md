@@ -1,2 +1,2 @@
-# Trianafy
-Proyecto de Spring con DTOs en clase
+# trianafy-base
+Repositorio base para el proyecto Trianafy de 2º DAM - Salesianos Triana
