@@ -4,6 +4,7 @@ import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
 import com.salesianostriana.dam.trianafy.service.SongService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -59,7 +60,40 @@ public class ArtistController {
             return ResponseEntity.ok(artistServ.findAll());
         }
     }
-    
+
+
+    @Operation(summary = "Este método busca un artista por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha encontrado al artista que buscaba",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Artist.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            [
+                                                {"id": 2, "name": "Joaquín Sabina"}          
+                                            ]                                          
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ese artista",
+                    content = @Content),
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<Artist> findOneArtistById(
+            @Parameter(description = "Id del Artista que se quiera buscar")
+            @PathVariable Long id
+    ) {
+        if (artistServ.findById(id).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        else {
+            return ResponseEntity.of(artistServ.findById(id));
+        }
+    }
+
+
     @Operation(summary = "Este método crea un nuevo artista")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
@@ -79,7 +113,8 @@ public class ArtistController {
                     content = @Content),
     })
     @PostMapping("/")
-    public ResponseEntity<Artist> createOneArtist(@RequestBody @NotNull Artist artist) {
+    public ResponseEntity<Artist> createOneArtist(
+            @RequestBody @NotNull Artist artist) {
         if(artist.getName() == null || artist.getName().isBlank()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -114,6 +149,7 @@ public class ArtistController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Artist> editOneArtistbyId (
+            @Parameter(description = "Id del Artista que se quiera editar")
             @RequestBody @NotNull Artist artist,
             @PathVariable Long id) {
         if(artistServ.findById(id).isEmpty()) {
@@ -142,6 +178,7 @@ public class ArtistController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteOneArtistById (
+            @Parameter(description = "Id del Artista que se quiera eliminar")
             @PathVariable Long id) {
         if(artistServ.findById(id).isPresent()){
             songServ.findByArtist(artistServ.findById(id))
@@ -152,8 +189,4 @@ public class ArtistController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
-
-
-
-
 }
