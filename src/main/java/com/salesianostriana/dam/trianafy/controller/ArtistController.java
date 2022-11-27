@@ -25,7 +25,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/artist")
-@Tag(name = "Artists", description = "Esta clase implementa un CRUD de Restcontrollers para la entidad Artists")
+@Tag(name = "Artists", description = "Esta clase implementa un CRUD de Restcontrollers para la entidad Artist")
 public class ArtistController {
 
     private final ArtistService artistServ;
