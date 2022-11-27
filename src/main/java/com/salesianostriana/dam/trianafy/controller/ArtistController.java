@@ -2,6 +2,7 @@ package com.salesianostriana.dam.trianafy.controller;
 
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
+import com.salesianostriana.dam.trianafy.service.SongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -22,9 +24,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/artist")
+@Tag(name = "Artists", description = "Esta clase implementa un CRUD de Restcontrollers para la entidad Artists")
 public class ArtistController {
 
     private final ArtistService artistServ;
+    private final SongService songServ;
 
 
     @Operation(summary = "Este método lista todos los artistas")
@@ -55,7 +59,7 @@ public class ArtistController {
             return ResponseEntity.ok(artistServ.findAll());
         }
     }
-
+    
     @Operation(summary = "Este método crea un nuevo artista")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
@@ -65,7 +69,7 @@ public class ArtistController {
                             examples = {@ExampleObject(
                                     value = """
                                             [
-                                                {"id": 1, "name": "Muse"},    
+                                                {"id": 13, "name": "Muse"},    
                                             ]                                          
                                             """
                             )}
@@ -96,7 +100,7 @@ public class ArtistController {
                             examples = {@ExampleObject(
                                     value = """
                                             [
-                                                {"id": 1, "name": "Muse"},    
+                                                {"id": 1, "name": "RHCP"},    
                                             ]                                          
                                             """
                             )}
@@ -109,7 +113,7 @@ public class ArtistController {
                     content = @Content)
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Artist> editOneArtist(
+    public ResponseEntity<Artist> editOneArtistbyId (
             @RequestBody @NotNull Artist artist,
             @PathVariable Long id) {
         if(artistServ.findById(id).isEmpty()) {
@@ -128,6 +132,27 @@ public class ArtistController {
             );
         }
      }
+
+
+    @Operation(summary = "Este método elimina un artista localizado por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Artista eliminado correctamente",
+                    content = @Content),
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteOneArtistById (
+            @PathVariable Long id) {
+        if(artistServ.findById(id).isPresent()){
+            songServ.findByArtist(artistServ.findById(id))
+                    .stream()
+                    .forEach(song -> song.setArtist(null));
+            artistServ.deleteById(id);
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+    }
+
 
 
 
