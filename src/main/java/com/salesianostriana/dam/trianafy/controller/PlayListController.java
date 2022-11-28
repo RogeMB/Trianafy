@@ -18,10 +18,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,12 +37,11 @@ public class PlayListController {
     private final ListConverterDTO listConverterDTO;
 
 
-
     @Operation(summary = "Este método lista todas las playlist")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se han encontrado canciones",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = GetListDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
@@ -63,10 +59,9 @@ public class PlayListController {
     })
     @GetMapping("/")
     public ResponseEntity<List<GetListDTO>> getAllPlaylists() {
-        if(playlistServ.findAll().isEmpty()) {
+        if (playlistServ.findAll().isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        else{
+        } else {
             List<GetListDTO> listOfPL = playlistServ.findAll().stream().map(listConverterDTO::listToDTO).collect(Collectors.toList());
             return ResponseEntity.status(HttpStatus.OK).body(listOfPL);
         }
@@ -77,7 +72,7 @@ public class PlayListController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se han encontrado la playlist buscada",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = GetListDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
@@ -102,11 +97,47 @@ public class PlayListController {
     ) {
         if (playlistServ.findById(id).isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        else {
+        } else {
             return ResponseEntity.ok(listConverterDTO.listDetailsDTO(playlistServ.findById(id).get()));
         }
     }
 
 
+    @Operation(summary = "Este método crea una nueva playlist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha creado una nueva playlist",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = SetSongDTO.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                           [
+                                               {"id": 18,
+                                                "title": "Bliss",
+                                                "artist": "Muse",
+                                                "album": "Origin of Simmetry",
+                                                "year": "2001"},
+                                            ]
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se han introducido correctamente los datos de la canción",
+                    content = @Content),
+    })
+    @PostMapping("/")
+    public ResponseEntity<SetPlayListDTO> createOnePlaylist(
+            @RequestBody SetPlayListDTO setPLDTO) {
+        if (setPLDTO.getName() == null
+                || setPLDTO.getDescription() == null
+                || setPLDTO.getDescription().isBlank()
+                || setPLDTO.getName().isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } else {
+            Playlist pl = listConverterDTO.createPlDtotoPlaylist(setPLDTO);
+            playlistServ.add(pl);
+            setPLDTO.setId(pl.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(setPLDTO);
+        }
+    }
 }

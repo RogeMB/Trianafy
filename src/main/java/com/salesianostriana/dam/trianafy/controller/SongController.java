@@ -120,27 +120,23 @@ public class SongController {
     }
 
 
-
     @Operation(summary = "Este método crea una nueva canción")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
-                    description = "Se ha creado un nueva canción",
+                    description = "Se ha creado una nueva canción",
                     content = { @Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = SetSongDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
                                            [
-                                               {"id": 18,
-                                                "title": "Bliss",
-                                                "artist": "Muse",
-                                                "album": "Origin of Simmetry",
-                                                "year": "2001"},
+                                            {"name":"superlista",
+                                            "description":"La mejor lista de la historia"}
                                             ]
                                             """
                             )}
                     )}),
             @ApiResponse(responseCode = "400",
-                    description = "No se han introducido correctamente los datos de la canción",
+                    description = "No se han introducido correctamente los datos de la playlist",
                     content = @Content),
     })
     @PostMapping("/")
@@ -227,6 +223,7 @@ public class SongController {
             );
         }
     }
+
 
     @Operation(summary = "Este método elimina una canción y sus repeticiones localizadas por su id")
     @ApiResponses(value = {
