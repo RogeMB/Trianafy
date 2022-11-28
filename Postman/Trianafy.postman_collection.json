@@ -272,7 +272,7 @@
 					"response": []
 				},
 				{
-					"name": "Edit one Playlist",
+					"name": "Create one Playlist",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -293,6 +293,33 @@
 							"path": [
 								"playlist",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editone Playlist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"lalistasi\",\r\n    \"description\": \"La peor lista de la historia\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/playlist/12",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"playlist",
+								"12"
 							]
 						}
 					},
