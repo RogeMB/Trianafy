@@ -39,4 +39,11 @@ public class ListConverterDTO {
         return songResp;
     }
 
+    public Playlist createPlDtotoPlaylist (SetPlayListDTO st) {
+        return new Playlist(
+                st.getName(),
+                st.getDescription()
+        );
+    }
+
 }
