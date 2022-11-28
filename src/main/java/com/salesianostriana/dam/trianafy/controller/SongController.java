@@ -6,8 +6,10 @@ import com.salesianostriana.dam.trianafy.Dto.SetSongDTO;
 import com.salesianostriana.dam.trianafy.Dto.SongDtoConverter;
 import com.salesianostriana.dam.trianafy.Dto.SongGetByIdDTO;
 import com.salesianostriana.dam.trianafy.model.Artist;
+import com.salesianostriana.dam.trianafy.model.Playlist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
+import com.salesianostriana.dam.trianafy.service.PlaylistService;
 import com.salesianostriana.dam.trianafy.service.SongService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,6 +40,8 @@ public class SongController {
     private final ArtistService artistServ;
 
     private final SongDtoConverter songDtoConverter;
+
+    private final PlaylistService playlistServ;
 
 
     @Operation(summary = "Este método lista todas las canciones")
@@ -178,6 +182,33 @@ public class SongController {
             }).orElse(Optional.empty())
             );
         }
+    }
+
+    @Operation(summary = "Este método elimina una canción y sus repeticiones localizadas por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Canción eliminada correctamente",
+                    content = @Content),
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteSongByid (
+            @Parameter(description = "Id de la canción que desea borrar")
+            @PathVariable Long id
+    ) {
+        if(songServ.findById(id).isPresent()) {
+            Song s = songServ.findById(id).get();
+            playlistServ.findAll()
+                    .stream()
+                    .filter(playlist -> playlist.getSongs().contains(s)).forEach(playlist -> {
+                        while (playlist.getSongs().contains(s)){
+                            playlist.deleteSong(s);
+                        }
+                        playlistServ.edit(playlist);
+                    });
+
+            songServ.delete(s);
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
