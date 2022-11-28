@@ -4,7 +4,7 @@ package com.salesianostriana.dam.trianafy.controller;
 import com.salesianostriana.dam.trianafy.dto.GetSongDTO;
 import com.salesianostriana.dam.trianafy.dto.SetSongDTO;
 import com.salesianostriana.dam.trianafy.dto.SongDtoConverter;
-import com.salesianostriana.dam.trianafy.dto.SongGetByIdDTO;
+import com.salesianostriana.dam.trianafy.dto.GetSongByIdDTO;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
@@ -84,12 +84,12 @@ public class SongController {
     }
 
 
-    @Operation(summary = "Este método lista una canción buscada su id")
+    @Operation(summary = "Este método lista una canción buscada por su id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se han encontrado la canción buscada",
                     content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = SongGetByIdDTO.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = GetSongByIdDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
                                             [
@@ -107,7 +107,7 @@ public class SongController {
                     content = @Content),
     })
     @GetMapping("/{id}")
-    public ResponseEntity<SongGetByIdDTO> findOneSong(
+    public ResponseEntity<GetSongByIdDTO> findOneSong(
             @Parameter(description = "Id de la canción que se quiera buscar")
             @PathVariable Long id
     ) {

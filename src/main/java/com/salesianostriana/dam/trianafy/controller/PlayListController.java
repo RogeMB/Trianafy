@@ -1,14 +1,13 @@
 package com.salesianostriana.dam.trianafy.controller;
 
 
-import com.salesianostriana.dam.trianafy.dto.GetListDTO;
-import com.salesianostriana.dam.trianafy.dto.GetSongDTO;
-import com.salesianostriana.dam.trianafy.dto.ListConverter;
-import com.salesianostriana.dam.trianafy.dto.SongDtoConverter;
+import com.salesianostriana.dam.trianafy.dto.*;
+import com.salesianostriana.dam.trianafy.model.Playlist;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
 import com.salesianostriana.dam.trianafy.service.PlaylistService;
 import com.salesianostriana.dam.trianafy.service.SongService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -20,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +37,7 @@ public class PlayListController {
     private final SongService songServ;
 
     private final ArtistService artistServ;
-    private final ListConverter listConverter;
+    private final ListConverterDTO listConverterDTO;
 
 
 
@@ -67,9 +67,46 @@ public class PlayListController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         else{
-            List<GetListDTO> listOfPL = playlistServ.findAll().stream().map(listConverter::listToDTO).collect(Collectors.toList());
+            List<GetListDTO> listOfPL = playlistServ.findAll().stream().map(listConverterDTO::listToDTO).collect(Collectors.toList());
             return ResponseEntity.status(HttpStatus.OK).body(listOfPL);
         }
     }
+
+
+    @Operation(summary = "Este método lista una playlist buscada por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado la playlist buscada",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetListDTO.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            [
+                                               {"id":12,"name":"Random","description":"Una lista muy loca","songs":
+                                               [{"id":9,"title":"Enter Sandman","artist":"Metallica","album":"Metallica","year":"1991"},
+                                               {"id":8,"title":"Love Again","artist":"Dua Lipa","album":"Future Nostalgia","year":"2021"},
+                                               {"id":9,"title":"Enter Sandman","artist":"Metallica","album":"Metallica","year":"1991"},
+                                               {"id":11,"title":"Nothing Else Matters","artist":"Metallica","album":"Metallica","year":"1991"}]}
+                                                     ]
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna playlist con ese id",
+                    content = @Content),
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<GetOneListDetailsDTO> findOnePlaylist(
+            @Parameter(description = "Id de la playlist que se quiera buscar")
+            @PathVariable Long id
+    ) {
+        if (playlistServ.findById(id).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        else {
+            return ResponseEntity.ok(listConverterDTO.listDetailsDTO(playlistServ.findById(id).get()));
+        }
+    }
+
 
 }

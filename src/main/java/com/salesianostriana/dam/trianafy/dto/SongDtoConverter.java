@@ -29,12 +29,12 @@ public class SongDtoConverter {
     }
 
 
-    public SongGetByIdDTO songDtoByID (Song s) {
+    public GetSongByIdDTO songDtoByID (Song s) {
         SetArtistToSongDTO a = new SetArtistToSongDTO();
         if(s.getArtist() != null ){
             a = ArtistDTOConverter.toArtistDto(s.getArtist());
         }
-        return SongGetByIdDTO.builder()
+        return GetSongByIdDTO.builder()
                 .id(s.getId())
                 .album(s.getAlbum())
                 .title(s.getTitle())
