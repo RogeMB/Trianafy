@@ -6,7 +6,6 @@ import com.salesianostriana.dam.trianafy.Dto.SetSongDTO;
 import com.salesianostriana.dam.trianafy.Dto.SongDtoConverter;
 import com.salesianostriana.dam.trianafy.Dto.SongGetByIdDTO;
 import com.salesianostriana.dam.trianafy.model.Artist;
-import com.salesianostriana.dam.trianafy.model.Playlist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
 import com.salesianostriana.dam.trianafy.service.PlaylistService;
@@ -53,18 +52,18 @@ public class SongController {
                             examples = {@ExampleObject(
                                     value = """
                                             [
-                                                {"id": 7, 
+                                                {"id": 7,
                                                 "title": "Don't Start Now",
                                                 "artist": "Dua Lipa",
                                                 "album": "Future Nostalgia",
                                                 "year": "2019"},
                                                 
-                                                {"id": 8, 
+                                                {"id": 8,
                                                 "title": "Love Again",
                                                 "artist": "Dua Lipa",
                                                 "album": "Future Nostalgia",
-                                                "year": "2021"},  
-                                            ]                                          
+                                                "year": "2021"},
+                                            ]
                                             """
                             )}
                     )}),
@@ -90,16 +89,16 @@ public class SongController {
             @ApiResponse(responseCode = "200",
                     description = "Se han encontrado la canción buscada",
                     content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = GetSongDTO.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = SongGetByIdDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
-                                            [    
-                                                {"id": 8, 
+                                            [
+                                                {"id": 8,
                                                 "title": "Love Again",
                                                 "artist": "Dua Lipa",
                                                 "album": "Future Nostalgia",
-                                                "year": "2021"},  
-                                            ]                                          
+                                                "year": "2021"},
+                                            ]
                                             """
                             )}
                     )}),
@@ -122,21 +121,66 @@ public class SongController {
 
 
 
+    @Operation(summary = "Este método crea una nueva canción")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha creado un nueva canción",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = SetSongDTO.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                           [
+                                               {"id": 18,
+                                                "title": "Bliss",
+                                                "artist": "Muse",
+                                                "album": "Origin of Simmetry",
+                                                "year": "2001"},
+                                            ]
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se han introducido correctamente los datos de la canción",
+                    content = @Content),
+    })
+    @PostMapping("/")
+    public ResponseEntity<GetSongDTO> createOneSong (@RequestBody SetSongDTO setSdto) {
+        if(setSdto.getIdArtist() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        Song s = songDtoConverter.dtoToSong(setSdto);
+        artistServ.findById(setSdto.getIdArtist()).ifPresent(s::setArtist);
+
+        if(s.getTitle().isBlank()
+                || s.getYear().isBlank()
+                || s.getAlbum().isBlank()
+                || s.getArtist() == null
+        ) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(songDtoConverter.toSongDto(songServ.add(s)));
+
+        }
+    }
+
+
     @Operation(summary = "Este método edita una canción si la ha localizado por su id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha editado un nuevo artista",
                     content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = Artist.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = SetSongDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
                                             [
-                                               {"id": 8, 
+                                               {"id": 8,
                                                 "title": "Love Again and again and again",
                                                 "artist": "Dua Lipa",
                                                 "album": "Past Nostalgia",
-                                                "year": "2021"},  
-                                            ]                                          
+                                                "year": "2021"},
+                                            ]
                                             """
                             )}
                     )}),
