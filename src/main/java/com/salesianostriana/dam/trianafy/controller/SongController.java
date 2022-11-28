@@ -4,6 +4,7 @@ package com.salesianostriana.dam.trianafy.controller;
 import com.salesianostriana.dam.trianafy.Dto.GetSongDTO;
 import com.salesianostriana.dam.trianafy.Dto.SetSongDTO;
 import com.salesianostriana.dam.trianafy.Dto.SongDtoConverter;
+import com.salesianostriana.dam.trianafy.Dto.SongGetByIdDTO;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
@@ -80,6 +81,40 @@ public class SongController {
     }
 
 
+    @Operation(summary = "Este método lista una canción buscada su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado la canción buscada",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetSongDTO.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            [    
+                                                {"id": 8, 
+                                                "title": "Love Again",
+                                                "artist": "Dua Lipa",
+                                                "album": "Future Nostalgia",
+                                                "year": "2021"},  
+                                            ]                                          
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna canción con ese id",
+                    content = @Content),
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<SongGetByIdDTO> findOneSong(
+            @Parameter(description = "Id de la canción que se quiera buscar")
+            @PathVariable Long id
+    ) {
+        if (songServ.findById(id).isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        else {
+            return ResponseEntity.ok(songDtoConverter.songDtoByID(songServ.findById(id).get()));
+        }
+    }
 
 
 

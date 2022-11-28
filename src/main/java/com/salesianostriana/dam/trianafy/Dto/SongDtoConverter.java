@@ -2,11 +2,11 @@ package com.salesianostriana.dam.trianafy.Dto;
 
 
 import com.salesianostriana.dam.trianafy.model.Song;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SongDtoConverter {
-
 
     public Song dtoToSong (SetSongDTO SDto) {
         return Song
@@ -26,6 +26,21 @@ public class SongDtoConverter {
                 .artist(artistName)
                 .year(s.getYear())
                 .album(s.getAlbum())
+                .build();
+    }
+
+
+    public SongGetByIdDTO songDtoByID (Song s) {
+        SetArtistToSongDTO a = new SetArtistToSongDTO();
+        if(s.getArtist() != null ){
+            a = ArtistDTOConverter.toArtistDto(s.getArtist());
+        }
+        return SongGetByIdDTO.builder()
+                .id(s.getId())
+                .album(s.getAlbum())
+                .title(s.getTitle())
+                .year(s.getYear())
+                .artist(a)
                 .build();
     }
 
