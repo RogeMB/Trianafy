@@ -1,4 +1,5 @@
-package com.salesianostriana.dam.trianafy.Dto;
+package com.salesianostriana.dam.trianafy.dto;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,13 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class SongGetByIdDTO {
-    private Long id;
+public class SetSongDTO {
     private String title;
-    private String album;
-    private SetArtistToSongDTO artist;
     private String year;
+    private String album;
+    private Long idArtist;
+
 }

@@ -1,8 +1,7 @@
-package com.salesianostriana.dam.trianafy.Dto;
+package com.salesianostriana.dam.trianafy.dto;
 
 
 import com.salesianostriana.dam.trianafy.model.Song;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
