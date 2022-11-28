@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SongGetByIdDTO {
+public class GetSongByIdDTO {
     private Long id;
     private String title;
     private String album;
