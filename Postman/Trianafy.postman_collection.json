@@ -231,6 +231,74 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Playlists",
+			"item": [
+				{
+					"name": "List Playlist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/playlist/",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"playlist",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find One Playlist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/playlist/12",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"playlist",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit one Playlist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"superlista\",\r\n    \"description\": \"La mejor lista de la historia\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/playlist/",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"playlist",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
