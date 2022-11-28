@@ -18,7 +18,7 @@ public class GetSongDTO {
     private String album;
     private String year;
 
-    public static GetSongDTO of (Song s) {
+    /*public static GetSongDTO of (Song s) {
         String artistName="NoNameKnown";
 
         if(s.getArtist() != null) {
@@ -32,6 +32,6 @@ public class GetSongDTO {
                 .album(s.getAlbum())
                 .year(s.getYear())
                 .build();
-    }
+    }*/
 
 }
