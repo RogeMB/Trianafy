@@ -165,7 +165,7 @@ public class SongController {
     @Operation(summary = "Este método edita una canción si la ha localizado por su id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
-                    description = "Se ha editado un nuevo artista",
+                    description = "Se ha editado una nueva canción",
                     content = { @Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = SetSongDTO.class)),
                             examples = {@ExampleObject(
