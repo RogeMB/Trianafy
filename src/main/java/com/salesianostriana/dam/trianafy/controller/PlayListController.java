@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -108,7 +109,7 @@ public class PlayListController {
             @ApiResponse(responseCode = "201",
                     description = "Se ha creado una nueva playlist",
                     content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = SetSongDTO.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = SetPlayListDTO.class)),
                             examples = {@ExampleObject(
                                     value = """
                                            [
@@ -140,4 +141,49 @@ public class PlayListController {
             return ResponseEntity.status(HttpStatus.CREATED).body(setPLDTO);
         }
     }
+
+
+
+    @Operation(summary = "Este método edita una playlist si la ha localizado por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha editado una playlist",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetListDTO.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            [
+                                               {"id": 8,
+                                                "title": "Love Again and again and again",
+                                                "artist": "Dua Lipa",
+                                                "album": "Past Nostalgia",
+                                                "year": "2021"},
+                                            ]
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se han introducido bien los datos requeridos",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado ninguna playlist con esa ID",
+                    content = @Content)
+    })
+    @PutMapping("/list/{id}")
+    public ResponseEntity<GetListDTO> updateOnePlayList (
+            @PathVariable Long id,
+            @RequestBody SetPlayListDTO setPLDTO) {
+
+
+        return ResponseEntity.of(playlistServ.findById(id).map(oldPL -> {
+            oldPL.setName(setPLDTO.getName());
+            oldPL.setDescription(setPLDTO.getDescription());
+
+            return Optional.of(listConverterDTO.listToDTO(playlistServ.add(oldPL)));
+                        })
+                        .orElse(Optional.empty())
+        );
+    }
+
+
 }
