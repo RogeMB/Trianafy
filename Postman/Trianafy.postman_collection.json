@@ -1,0 +1,263 @@
+{
+	"info": {
+		"_postman_id": "6f88feef-d77d-43cd-9300-ea16f8df7ae6",
+		"name": "Trianafy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23783500"
+	},
+	"item": [
+		{
+			"name": "Artist",
+			"item": [
+				{
+					"name": "ListArtist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/artist/",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"artist",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateArtist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\": \"Muse\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/artist/",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"artist",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditArtist",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/artist/8",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"artist",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteArtist",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/artist/13",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"artist",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindOneArtist",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/artist/4",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"artist",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Songs",
+			"item": [
+				{
+					"name": "ListSongs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/song/",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"song",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditSong",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Pruebita\",\r\n    \"album\": \"El mejor\",\r\n    \"year\": \"2015\",\r\n    \"artist\": \"Joaquín Sabina\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/song/6",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"song",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindOneSong",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/song/8",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"song",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteOneSong",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api_base_url}}/song/5",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"song",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSong",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n       \"id\": 19, \r\n       \"title\": \"Bliss\",\r\n       \"album\": \"Origin of Simmetry\",\r\n       \"year\": \"2001\",\r\n       \"artist\": \"Muse\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_base_url}}/song/",
+							"host": [
+								"{{api_base_url}}"
+							],
+							"path": [
+								"song",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
