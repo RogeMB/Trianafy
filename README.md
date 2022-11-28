@@ -12,9 +12,7 @@ Este es un ejercicio práctico para el desarrollo de una API REST en lenguaje Ja
 
 Se ha trabajado sobre la siguiente **documentación:**
 
-* [NBA API](https://github.com/kshvmdn/nba.js/blob/master/docs/api/DATA.md)
-* [FOTOS](https://medium.com/@avinash.sarguru/getting-nba-player-pictures-for-you-application-6106d5530943)
-* [NBA.com OFICIAL](https://www.sportingnews.com/es/nba?gr=www)
+* [Baeldung](https://www.baeldung.com/)
 
 
 También se ha prácticado el manejo de **PostMan**, **Swagger** y la metodología ágil **SCRUM** para el reparto de tareas a través la ramificación de estas con **GitHub**.
