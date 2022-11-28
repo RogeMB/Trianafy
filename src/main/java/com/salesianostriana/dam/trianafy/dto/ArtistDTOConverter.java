@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.trianafy.Dto;
+package com.salesianostriana.dam.trianafy.dto;
 
 import com.salesianostriana.dam.trianafy.model.Artist;
 import org.springframework.stereotype.Component;

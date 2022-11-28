@@ -1,10 +1,10 @@
 package com.salesianostriana.dam.trianafy.controller;
 
 
-import com.salesianostriana.dam.trianafy.Dto.GetSongDTO;
-import com.salesianostriana.dam.trianafy.Dto.SetSongDTO;
-import com.salesianostriana.dam.trianafy.Dto.SongDtoConverter;
-import com.salesianostriana.dam.trianafy.Dto.SongGetByIdDTO;
+import com.salesianostriana.dam.trianafy.dto.GetSongDTO;
+import com.salesianostriana.dam.trianafy.dto.SetSongDTO;
+import com.salesianostriana.dam.trianafy.dto.SongDtoConverter;
+import com.salesianostriana.dam.trianafy.dto.SongGetByIdDTO;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
