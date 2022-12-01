@@ -1,5 +1,7 @@
 package com.salesianostriana.dam.trianafy.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.salesianostriana.dam.trianafy.dto.SongDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,13 +18,20 @@ public class Song {
 
     @Id
     @GeneratedValue
+    @JsonView({SongDTO.NormalSong.class, SongDTO.SongArtist.class})
     private Long id;
 
+    @JsonView({SongDTO.NormalSong.class, SongDTO.SongArtist.class})
     private String title;
+
+    @JsonView({SongDTO.NormalSong.class, SongDTO.SongArtist.class})
     private String album;
+
+    @JsonView({SongDTO.NormalSong.class, SongDTO.SongArtist.class})
     @Column(name = "year_of_song")
     private String year;
 
+    @JsonView(SongDTO.NormalSong.class)
     @ManyToOne(fetch = FetchType.EAGER)
     private Artist artist;
 
